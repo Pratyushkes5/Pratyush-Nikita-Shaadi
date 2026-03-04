@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pratyush & Nikita | The Wedding</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&family=Montserrat:wght@300;400;700&display=swap');
+
+        :root {
+            --gold: #d4af37;
+            --velvet: #800020;
+            --cream: #fffaf0;
+            --glass: rgba(255, 255, 255, 0.95);
+        }
+
+        body, html { 
+            margin: 0; padding: 0; 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: white; 
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* --- CURTAINS --- */
+        #curtain-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999; display: flex; pointer-events: none; }
+        .curtain { 
+            width: 50%; height: 100%; background: var(--velvet); 
+            transition: transform 3.5s cubic-bezier(0.45, 0, 0.55, 1), border-radius 3.5s cubic-bezier(0.45, 0, 0.55, 1), opacity 2s ease; 
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.6); position: relative;
+            background-image: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(0,0,0,0.15) 45px);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .left { border-right: 2px solid var(--gold); transform-origin: left center; }
+        .right { border-left: 2px solid var(--gold); transform-origin: right center; }
+        .open .left { transform: scaleX(0.1) translateX(-10%); border-top-right-radius: 50% 50%; border-bottom-right-radius: 50% 50%; }
+        .open .right { transform: scaleX(0.1) translateX(10%); border-top-left-radius: 50% 50%; border-bottom-left-radius: 50% 50%; }
+
+        .fairy-lights { position: absolute; top: 0; bottom: 0; width: 10px; display: flex; flex-direction: column; justify-content: space-around; align-items: center; z-index: 20; transition: opacity 1s; }
+        .light-bulb { width: 5px; height: 5px; background: #fff; border-radius: 50%; box-shadow: 0 0 10px #fff, 0 0 15px var(--gold); animation: flicker var(--d) ease-in-out infinite alternate; }
+        @keyframes flicker { 0% { opacity: 0.4; } 100% { opacity: 1; } }
+        .jhoomar { position: absolute; top: 0; width: 40px; height: 100px; z-index: 15; transform-origin: top center; animation: sway 4s ease-in-out infinite; transition: opacity 1s; }
+        .jhoomar::after { content: "🏮"; font-size: 1.2rem; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); }
+        @keyframes sway { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+
+        .photo-circle { position: relative; width: 150px; height: 150px; background: white; border: 4px solid var(--gold); border-radius: 50%; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5); opacity: 1; transition: opacity 1s ease-out; z-index: 10; pointer-events: auto; animation: float 3s ease-in-out infinite; }
+        @media (min-width: 768px) { .photo-circle { width: 220px; height: 220px; border: 6px solid var(--gold); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .photo-circle img { width: 100%; height: 100%; object-fit: cover; }
+        #monogram { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 120px; height: 120px; background: white; border: 4px double var(--gold); border-radius: 50%; z-index: 1000; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(212, 175, 55, 0.7); transition: opacity 1s ease-out, visibility 1s; overflow: hidden; }
+        @media (min-width: 768px) { #monogram { width: 180px; height: 180px; } }
+        #monogram img { width: 85%; height: 85%; object-fit: contain; }
+        .open #monogram, .open .photo-circle, .open .jhoomar, .open .fairy-lights { opacity: 0; visibility: hidden; }
+
+        /* --- SECTION 1 --- */
+        .invitation-section { position: relative; height: 100vh; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center; opacity: 0; transition: opacity 2s ease; background-image: url('image.jpeg'); background-size: cover; background-position: center; }
+        .invitation-section::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 250, 240, 0.15); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 1; transition: backdrop-filter 2.5s ease; }
+        .invitation-section.reveal-photo::before { backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px); }
+        .visible { opacity: 1; }
+        .content-inner { position: relative; z-index: 2; margin-top: 5vh; width: 90%; }
+        h1 { font-family: 'Great Vibes', cursive; font-size: 3rem; color: var(--velvet); margin: 5px 0; }
+        h2 { font-family: 'Cinzel', serif; font-size: 0.8rem; color: var(--gold); letter-spacing: 3px; margin: 0; font-weight: 700; background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .married-text { font-family: 'Great Vibes', cursive; font-size: 1.8rem; margin: 10px 0; background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold; display: block; }
+        @media (min-width: 768px) { h1 { font-size: 4rem; } h2 { font-size: 1.2rem; letter-spacing: 5px; } .married-text { font-size: 2.5rem; } }
+        
+        .scratch-container { display: flex; gap: 8px; margin: 15px auto; justify-content: center; flex-wrap: wrap; }
+        .scratch-circle { position: relative; width: 75px; height: 75px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--gold); font-weight: bold; }
+        canvas { position: absolute; top: 0; left: 0; border-radius: 50%; cursor: crosshair; touch-action: none; }
+        
+        #countdown { display: flex; gap: 12px; margin: 10px auto; justify-content: center; color: var(--velvet); }
+        .time-box { display: flex; flex-direction: column; align-items: center; min-width: 50px; }
+        .time-val { font-size: 1.8rem; font-weight: bold; line-height: 1; }
+        .time-label { font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase; color: var(--gold); margin-top: 3px; font-weight: bold; }
+
+        /* --- SLIDER --- */
+        .slider-section { background: var(--cream); padding: 50px 0; overflow: hidden; border-top: 2px solid var(--gold); }
+        .slider-section h2 { font-family: 'Great Vibes', cursive; color: var(--velvet); text-align: center; font-size: 2.5rem; margin-bottom: 30px; }
+        .marquee { display: flex; width: 200%; animation: scroll 25s linear infinite; }
+        .marquee img { width: 200px; height: 250px; object-fit: cover; margin: 0 10px; border: 3px solid var(--gold); border-radius: 8px; cursor: zoom-in; transition: 0.3s; }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        #lightbox img { max-width: 90%; max-height: 80%; border: 4px solid var(--gold); border-radius: 8px; }
+
+        /* --- BLESSINGS (WhatsApp Integration) --- */
+        .blessings-section { background: var(--cream); padding: 60px 20px; text-align: center; border-top: 2px solid var(--gold); }
+        .blessings-section h2 { font-family: 'Cinzel', serif; color: var(--velvet); margin-bottom: 10px; font-size: 1.5rem; }
+        .blessing-box { width: 100%; max-width: 500px; margin: 0 auto; background: white; padding: 20px; border-radius: 15px; border: 2px solid var(--gold); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        textarea { width: 100%; height: 100px; border: 1px solid #ddd; border-radius: 10px; padding: 10px; font-family: inherit; resize: none; margin-bottom: 15px; box-sizing: border-box; outline: none; }
+        .wa-btn { background: #25D366; color: white; border: none; padding: 12px 25px; border-radius: 30px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin: 0 auto; transition: 0.3s; width: 100%; }
+        .wa-btn:hover { background: #128C7E; transform: translateY(-2px); }
+
+        /* Sections Styling */
+        .family-section { min-height: 100vh; background: var(--cream); padding: 40px 15px; display: flex; flex-direction: column; justify-content: center; text-align: center; border-top: 1px solid var(--gold); overflow: hidden; }
+        .family-grid { display: grid; grid-template-columns: 1fr; gap: 15px; max-width: 800px; margin: 0 auto; width: 100%; }
+        @media (min-width: 600px) { .family-grid { grid-template-columns: 1fr 1fr; } }
+        .family-card { background: var(--glass); padding: 15px 10px; border-radius: 12px; border: 1.5px solid rgba(212, 175, 55, 0.4); opacity: 0; transform: translateY(20px); transition: 0.8s; }
+        .family-card.pop-in { opacity: 1; transform: translateY(0); }
+        .location-section { padding: 60px 15px; background: white; text-align: center; border-top: 2px solid var(--gold); }
+        .btn { display: inline-block; margin-top: 20px; padding: 12px 30px; background: var(--velvet); color: white; text-decoration: none; border-radius: 30px; font-weight: 600; }
+        .video-section { background: #000; padding: 60px 0; border-top: 2px solid var(--gold); text-align: center; }
+        video { width: 100%; max-width: 800px; height: auto; display: block; margin: 0 auto; }
+        
+        .sparkle { position: absolute; width: 5px; height: 5px; background: var(--gold); border-radius: 50%; pointer-events: none; z-index: 11; animation: sparkle-fade 0.8s ease-out forwards; }
+        @keyframes sparkle-fade { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; } }
+        .petal { position: fixed; top: -10%; z-index: 5; pointer-events: none; animation: fall linear forwards; font-size: 1.2rem; }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div id="lightbox" onclick="this.style.display='none'">
+        <img id="lightbox-img" src="" alt="Enlarged">
+    </div>
+
+    <div id="curtain-wrapper">
+        <div class="curtain left">
+            <div class="jhoomar" style="left: 10px;"></div>
+            <div class="fairy-lights"><div class="light-bulb" style="--d: 0.5s"></div><div class="light-bulb" style="--d: 0.8s"></div><div class="light-bulb" style="--d: 0.6s"></div></div>
+            <div class="photo-circle" onmousemove="createSparkle(event)" ontouchmove="createSparkle(event)"><img src="pratyush.jpeg"></div>
+        </div>
+        <div id="monogram"><img src="ganeshji.jpg"></div>
+        <div class="curtain right">
+            <div class="jhoomar" style="right: 10px;"></div>
+            <div class="fairy-lights"><div class="light-bulb" style="--d: 0.7s"></div><div class="light-bulb" style="--d: 0.4s"></div><div class="light-bulb" style="--d: 1s"></div></div>
+            <div class="photo-circle" onmousemove="createSparkle(event)" ontouchmove="createSparkle(event)"><img src="nikita.jpeg"></div>
+        </div>
+    </div>
+
+    <main class="invitation-section" id="main-invite">
+        <div class="content-inner">
+            <h2>Save the Date</h2>
+            <h1>Pratyush & Nikita</h1>
+            <span class="married-text">Are getting married!</span>
+            <div class="scratch-container">
+                <div class="scratch-circle"><div>28</div><canvas class="scratch-canvas" width="75" height="75"></canvas></div>
+                <div class="scratch-circle"><div>APRIL</div><canvas class="scratch-canvas" width="75" height="75"></canvas></div>
+                <div class="scratch-circle"><div>2026</div><canvas class="scratch-canvas" width="75" height="75"></canvas></div>
+            </div>
+            <div id="countdown">
+                <div class="time-box"><span id="days" class="time-val">00</span><span class="time-label">Days</span></div>
+                <div class="time-box"><span id="hours" class="time-val">00</span><span class="time-label">Hrs</span></div>
+                <div class="time-box"><span id="mins" class="time-val">00</span><span class="time-label">Mins</span></div>
+            </div>
+        </div>
+    </main>
+
+    <section class="family-section">
+        <h3 style="color: var(--velvet); font-family: 'Cinzel';">Pratyush's Family</h3>
+        <div class="family-grid">
+            <div class="family-card pop-in" style="grid-column: span 2; max-width: 320px; margin: 0 auto;"><p style="font-size: 0.6rem; color: var(--gold); font-weight: bold;">GRANDMOTHER</p><p style="font-weight: bold; font-family: 'Cinzel';">Smt. Vijay Lakshmi Gupta</p></div>
+            <div class="family-card reveal"><p style="font-size: 0.6rem; color: var(--gold);">PARENTS</p><p style="font-weight: bold; font-family: 'Cinzel';">Sharad & Kavita</p><p style="font-family: 'Great Vibes'; font-size: 1.3rem;">Divyanshi</p></div>
+            <div class="family-card reveal"><p style="font-size: 0.6rem; color: var(--gold);">UNCLE & AUNT</p><p style="font-weight: bold; font-family: 'Cinzel';">Anand & Dolly</p><p style="font-family: 'Great Vibes'; font-size: 1.3rem;">Harsh & Vanshita</p></div>
+            <div class="family-card reveal"><p style="font-size: 0.6rem; color: var(--gold);">UNCLE & AUNT</p><p style="font-weight: bold; font-family: 'Cinzel';">Anoop & Parul</p><p style="font-family: 'Great Vibes'; font-size: 1.3rem;">Millee & Satvik</p></div>
+            <div class="family-card reveal"><p style="font-size: 0.6rem; color: var(--gold);">UNCLE & AUNT</p><p style="font-weight: bold; font-family: 'Cinzel';">Sudhir & Khushboo</p><p style="font-family: 'Great Vibes'; font-size: 1.3rem;">Arya</p></div>
+        </div>
+    </section>
+
+    <section class="family-section" style="border-top: none;">
+        <h3 style="color: var(--velvet); font-family: 'Cinzel';">Nikita's Family</h3>
+        <div class="family-grid">
+            <div class="family-card reveal"><p style="font-size: 0.6rem; color: var(--gold);">PARENTS</p><p style="font-weight: bold; font-family: 'Cinzel';">Rajesh & Sunita Gupta</p><p style="font-family: 'Great Vibes'; font-size: 1.3rem;">Priyanka & Subham</p></div>
+            <div class="family-card reveal"><p style="font-size: 0.6rem; color: var(--gold);">UNCLE & AUNT</p><p style="font-weight: bold; font-family: 'Cinzel';">Surendra & Manju Gupta</p><p style="font-family: 'Great Vibes'; font-size: 1.3rem;">Vicky & Navin</p></div>
+            <div class="family-card reveal"><p style="font-size: 0.6rem; color: var(--gold);">UNCLE & AUNT</p><p style="font-weight: bold; font-family: 'Cinzel';">Devanand & Anita Gupta</p><p style="font-family: 'Great Vibes'; font-size: 1.3rem;">Khushboo</p></div>
+            <div class="family-card reveal"><p style="font-size: 0.6rem; color: var(--gold);">UNCLE & AUNT</p><p style="font-weight: bold; font-family: 'Cinzel';">Mukesh & Poonam Gupta</p><p style="font-family: 'Great Vibes'; font-size: 1.3rem;">Ayansh & Harshit</p></div>
+        </div>
+    </section>
+
+    <section class="location-section" id="venue">
+        <h2 style="color: var(--gold); font-family: 'Cinzel';">Wedding Venue</h2>
+        <p><strong>Kishori Sadan Road</strong>, Pratapgarh, Uttar Pradesh</p>
+        <a href="https://maps.app.goo.gl/YourMapLink" target="_blank" class="btn">Navigate to Venue</a>
+    </section>
+
+    <section class="slider-section">
+        <h2>Love in Frames</h2>
+        <div class="marquee">
+            <img src="pratyush.jpeg" onclick="openLightbox(this.src)"><img src="nikita.jpeg" onclick="openLightbox(this.src)"><img src="image.jpeg" onclick="openLightbox(this.src)"><img src="pratyush.jpeg" onclick="openLightbox(this.src)"><img src="nikita.jpeg" onclick="openLightbox(this.src)">
+            <img src="pratyush.jpeg" onclick="openLightbox(this.src)"><img src="nikita.jpeg" onclick="openLightbox(this.src)"><img src="image.jpeg" onclick="openLightbox(this.src)"><img src="pratyush.jpeg" onclick="openLightbox(this.src)"><img src="nikita.jpeg" onclick="openLightbox(this.src)">
+        </div>
+    </section>
+
+    <section class="blessings-section">
+        <h2>Send Your Blessings</h2>
+        <div class="blessing-box">
+            <textarea id="guestMessage" placeholder="Type your wishes for the couple here..."></textarea>
+            <button class="wa-btn" onclick="sendBlessing()">
+                Send via WhatsApp
+            </button>
+        </div>
+    </section>
+
+    <section class="video-section">
+        <h2 style="font-family: 'Cinzel'; color: var(--gold); margin-bottom: 20px;">Our Film</h2>
+        <video controls playsinline poster="image.jpeg"><source src="NIKITA.mp4" type="video/mp4"></video>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        // WhatsApp logic with your number
+        function sendBlessing() {
+            const myNumber = "918209094155"; 
+            const message = document.getElementById('guestMessage').value;
+            if(!message) { alert("Please type your blessing first!"); return; }
+            const encodedMsg = encodeURIComponent("Blessing for Pratyush & Nikita: " + message);
+            window.open(`https://wa.me/${myNumber}?text=${encodedMsg}`, '_blank');
+        }
+
+        // Force Top on Refresh
+        window.onbeforeunload = function () { window.scrollTo(0, 0); };
+        if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+
+        function openLightbox(src) { document.getElementById('lightbox-img').src = src; document.getElementById('lightbox').style.display = 'flex'; }
+        function createPetal() { const p = document.createElement('div'); p.className = 'petal'; p.style.left = Math.random() * 100 + 'vw'; p.style.animationDuration = (Math.random() * 3 + 3) + 's'; p.innerHTML = Math.random() > 0.5 ? '🌸' : '🌹'; document.body.appendChild(p); setTimeout(() => p.remove(), 6000); }
+        function createSparkle(e) { const s = document.createElement('div'); s.className = 'sparkle'; const r = e.currentTarget.getBoundingClientRect(); const cX = (e.clientX || (e.touches ? e.touches[0].clientX : 0)); const cY = (e.clientY || (e.touches ? e.touches[0].clientY : 0)); s.style.left = (cX - r.left) + 'px'; s.style.top = (cY - r.top) + 'px'; s.style.setProperty('--tx', (Math.random()-0.5)*80+'px'); s.style.setProperty('--ty', (Math.random()-0.5)*80+'px'); e.currentTarget.appendChild(s); setTimeout(() => s.remove(), 800); }
+        
+        window.onload = () => { window.scrollTo(0, 0); setTimeout(() => { document.getElementById('curtain-wrapper').classList.add('open'); document.getElementById('main-invite').classList.add('visible'); }, 800); };
+
+        const canvases = document.querySelectorAll('.scratch-canvas');
+        let revealed = 0;
+        canvases.forEach(canvas => {
+            const ctx = canvas.getContext('2d'); ctx.fillStyle = '#d4af37'; ctx.fillRect(0,0,75,75);
+            let drawing = false;
+            canvas.onmousedown = canvas.ontouchstart = () => drawing = true;
+            window.onmouseup = window.ontouchend = () => drawing = false;
+            canvas.onmousemove = canvas.ontouchmove = (e) => {
+                if(!drawing) return;
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || (e.touches ? e.touches[0].clientX : 0)) - rect.left;
+                const y = (e.clientY || (e.touches ? e.touches[0].clientY : 0)) - rect.top;
+                ctx.globalCompositeOperation = 'destination-out'; ctx.beginPath(); ctx.arc(x,y,15,0,Math.PI*2); ctx.fill();
+                const d = ctx.getImageData(0,0,75,75).data; let c = 0; for(let i=3; i<d.length; i+=4) if(d[i]===0) c++;
+                if(c > 2500 && !canvas.dataset.done) {
+                    canvas.style.opacity = '0'; canvas.dataset.done = "true"; revealed++;
+                    if(revealed === 3) { 
+                        document.getElementById('main-invite').classList.add('reveal-photo'); 
+                        let pInt = setInterval(() => { confetti({ particleCount: 15, origin: { x: 0.2, y: 0.8 } }); confetti({ particleCount: 15, origin: { x: 0.8, y: 0.8 } }); }, 300);
+                        setTimeout(() => clearInterval(pInt), 4000);
+                        let petalInt = setInterval(createPetal, 500); setTimeout(() => clearInterval(petalInt), 8000); 
+                    }
+                }
+            };
+        });
+
+        function checkScroll() { document.querySelectorAll('.family-card').forEach((card, index) => { const ct = card.getBoundingClientRect().top; if (ct < window.innerHeight * 0.95) { setTimeout(() => { card.classList.add('pop-in'); }, index * 80); } }); }
+        window.addEventListener('scroll', checkScroll);
+        
+        const weddingDate = new Date("April 28, 2026 00:00:00").getTime();
+        setInterval(() => {
+            const diff = weddingDate - new Date().getTime();
+            document.getElementById('days').innerText = Math.floor(diff / (1000*60*60*24));
+            document.getElementById('hours').innerText = String(Math.floor((diff / (1000*60*60)) % 24)).padStart(2, '0');
+            document.getElementById('mins').innerText = String(Math.floor((diff / (1000*60)) % 60)).padStart(2, '0');
+        }, 1000);
+    </script>
+</body>
+</html>
